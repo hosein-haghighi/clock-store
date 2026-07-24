@@ -26,6 +26,7 @@ export const pushCartMerge = async (
 export const apiAddItem = async (item: CartItemType): Promise<DetailedCartItemType[]> => {
 
     const { data } = await api.post("/cart/items", item)
+
     return data?.data?.items ?? [];
 };
 

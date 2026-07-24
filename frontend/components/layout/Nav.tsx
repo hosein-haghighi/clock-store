@@ -4,7 +4,7 @@ import React from 'react'
 import { Button } from '../ui/button';
 import { Link } from '@/i18n/navigation';
 import Logout from '../auth/logout';
-import { ShoppingCartIcon, WatchIcon } from 'lucide-react';
+import { LogIn, LogInIcon, ShoppingCartIcon, WatchIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useCart } from '@/hooks/useCart';
@@ -28,10 +28,7 @@ export const Nav = () => {
             name: t("contact"),
             href: "/contact",
         },
-        {
-            name: t("repair"),
-            href: "/repair",
-        },
+
         {
             name: t("cart"),
             href: "/cart",
@@ -41,7 +38,7 @@ export const Nav = () => {
     return (
 
         <nav className="sticky top-0 z-50 bg-background p-2 flex justify-between items-center">
-            <ul className='flex gap-4 items-center '>
+            <ul className='flex gap-0  lg:gap-2 items-center '>
 
                 <li className={`${pathName === "/" ? "text-foreground" : "text-muted-foreground"} `}>
                     <Link href={"/"} >
@@ -51,21 +48,24 @@ export const Nav = () => {
 
                 {
                     navItems.map((navItem) => {
-                        const isActive = pathName === navItem.href
+                        const isActive = `/${pathName.split("/").at(-1)}` === navItem.href
                         const isCart = navItem.href === "/cart"
 
                         if (isCart) {
                             return (
                                 <li key={navItem.name} className='relative'>
-                                    <Link href={navItem.href} className={`${isActive ? "text-foreground" : "text-muted-foreground"}`}>
-                                        <Button variant={'link'} className='text-inherit gap-0 ' >
-                                            <ShoppingCartIcon size={20} />
-                                            <span>{navItem.name}</span>
-                                            {totalItems > 0 && (
-                                                <span className="absolute top-1 right-0 text-xs bg-amber-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
-                                                    {totalItems}
-                                                </span>
-                                            )}
+                                    <Link href={navItem.href}>
+                                        <Button variant={'link'} className={`${isActive ? "text-foreground bg-muted " : "text-muted-foreground"} rounded-lg p-2 text-inherit `} >
+                                            <span className='flex items-center'>
+
+                                                <span className='pb-1'>
+                                                    <ShoppingCartIcon size={18} /></span>
+                                                <span>{navItem.name}</span>
+                                                {totalItems > 0 && (
+                                                    <span className="absolute top-1 right-0 text-xs bg-amber-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                                        {totalItems}
+                                                    </span>
+                                                )}</span>
                                         </Button>
                                     </Link>
                                 </li>
@@ -74,8 +74,8 @@ export const Nav = () => {
 
                         return (
                             <li key={navItem.name}>
-                                <Link href={navItem.href} className={`${isActive ? "text-foreground" : "text-muted-foreground"} `}>
-                                    <Button variant={'link'} className='text-inherit' >
+                                <Link href={navItem.href} className={`${isActive ? "text-foreground bg-muted " : "text-muted-foreground"} rounded-sm p-1 `}>
+                                    <Button variant={'link'} className={`${isActive ? "text-foreground bg-muted " : "text-muted-foreground"} rounded-lg p-2 text-inherit `} >
                                         {navItem.name}
                                     </Button>
                                 </Link>
@@ -90,18 +90,18 @@ export const Nav = () => {
             {
                 !isAuthenticated ?
 
-                    <div className='flex gap-2 items-center '>
-                        <Button asChild variant={"default"}>
-                            <Link href="/login">
-                                {tAuth("login")}
-                            </Link>
-                        </Button>
+                    <div  >
+                        <Link href="/login"  >
+                            <Button asChild variant={"default"} className='flex gap-2 items-center'>
 
-                        <Button asChild variant={"outline"}>
-                            <Link href="/signup">
-                                {tAuth("signup")}
-                            </Link>
-                        </Button>
+                                <span className='flex'>
+                                    <span> {tAuth("login")}</span>
+                                    <LogInIcon />
+                                </span>
+
+
+                            </Button>
+                        </Link>
                     </div>
 
                     :

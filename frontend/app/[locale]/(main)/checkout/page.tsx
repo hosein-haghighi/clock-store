@@ -75,7 +75,7 @@ export default function CheckoutPage() {
     // ─── handlers  ───────────────────────────────────────────
     const { mutate: createOrder, isPending } = useCreateOrder();
     function submitHandler(formData: ShippingAddressInput) {
-        console.log({ cartItems })
+
         const items = cartItems.map(item => ({
             productId: item.productId,
             variantId: item.variantId,
@@ -86,10 +86,15 @@ export default function CheckoutPage() {
             { items, shippingAddress: formData },
             {
                 onSuccess: (order) => {
+                    toast.success("در حال انتقال به درگاه شاپرک...");
+                    console.log(order)
                     setIsSubmitting(false);
+
+                    form.reset()
                     // router.push(`/orders/${order._id}`); // or wherever confirmation lives
                 },
                 onError: (error) => {
+
                     setIsSubmitting(false);
                     // show toast/error message
                 },
@@ -97,7 +102,7 @@ export default function CheckoutPage() {
         );
 
         // Redirect to Shaparak gateway (simulated)
-        toast.success("در حال انتقال به درگاه شاپرک...");
+
 
     }
 

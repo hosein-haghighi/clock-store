@@ -43,7 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const src = `${process.env.NEXT_PUBLIC_API_URL}${product.images[0]}`;
   return (
-    <Link href={`/${product.slug}`} className="p-0" >
+    <Link href={`/${product.slug}`} className="p-0 pt-2" >
       <Card className="group flex flex-col  justify-center overflow-hidden 
       p-0
       rounded-none border w-full h-96 gap-0 border-zinc-200 bg-white  transition-all duration-300 hover:shadow-xl hover:inset-shadow-xl cursor-pointer dark:border-zinc-800 dark:bg-zinc-900 pt-0 py-0 m-0">

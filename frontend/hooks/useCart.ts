@@ -1,7 +1,7 @@
 import { apiAddItem, apiRemoveItem, apiUpdateItem, fetchCartDetails, fetchServerCart, pushCartMerge } from "@/services/cartServices";
 import { CartItemType, useCartStore } from "@/store/useCartStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 import { useUser } from "./useUser";
 
 
@@ -76,11 +76,20 @@ export const useCart = () => {
             clearOfflineItems();
         },
     });
+    useEffect(() => {
+        mergeMutation.mutate(offlineCartItems);
 
+        return () => {
+
+        }
+    }, [])
+
+    // mergeMutation.mutate(offlineCartItems);
     // ───────────────────────────────────────
     // login transition: merge local → server, then clear local
     // logout transition: copy server cart → Zustand
     // ───────────────────────────────────────
+
 
     useEffect(() => {
         const prev = prevAuthRef.current;
@@ -89,9 +98,6 @@ export const useCart = () => {
         if (prev === false && isAuthenticated) {
             if (offlineCartItems.length > 0) {
                 mergeMutation.mutate(offlineCartItems);
-            } else {
-                // nothing to merge, just clear in case
-                clearOfflineItems();
             }
         }
 
@@ -115,10 +121,16 @@ export const useCart = () => {
         prevAuthRef.current = isAuthenticated;
     }, [isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+
+        clearOfflineItems()
+
+    }, [isAuthenticated, clearOfflineItems])
     // ───────────────────────────────────────
     // addItem
     // ───────────────────────────────────────
     const addItem = async (item: CartItemType) => {
+
         if (isAuthenticated) {
             try {
                 const updatedItems = await apiAddItem(item);
@@ -276,15 +288,14 @@ export const useCart = () => {
         ? cartQuery.isPending
         : detailsQuery.isPending && offlineCartItems.length > 0;
 
+
     return {
         items,
         offlineCartItems,
-
         addItem,
         removeItem,
         increaseItem,
         decreaseItem,
-
         isLoading,
         isSyncing: mergeMutation.isPending,
         isError:

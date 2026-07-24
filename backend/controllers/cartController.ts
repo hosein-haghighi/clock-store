@@ -15,7 +15,6 @@ const populateCartItems = async (items: ICartItem[]) => {
 
         const variant = product.variants.id(item.variantId);
         if (!variant) return null;
-        console.log({ variant })
         return {
             productId: item.productId,
             variantId: variant._id,
@@ -192,7 +191,6 @@ export const mergeCart = async (req: Request, res: ResType) => {
     try {
         const userId = req.user._id;
         const localItems: ICartItem[] = req.body.items ?? [];
-
         let dbCart = await Cart.findOne({ userId });
         if (!dbCart) {
             dbCart = new Cart({ userId, items: [] });
@@ -211,8 +209,8 @@ export const mergeCart = async (req: Request, res: ResType) => {
         const productIds = localItems.map((i) => i.productId);
         const products = await Product.find({ _id: { $in: productIds } });
         const productMap = new Map(products.map((p) => [p._id.toString(), p]));
-
         for (const localItem of localItems) {
+
             const product = productMap.get(localItem.productId.toString());
             if (!product) continue;
 

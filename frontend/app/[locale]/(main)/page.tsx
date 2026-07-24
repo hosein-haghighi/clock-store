@@ -2,7 +2,7 @@
 
 import { ProductCard } from "@/components/products/ProductCard";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeletonnn";
 import { useFeaturedProducts } from "@/hooks/useProducts";
 import { PackageOpen, RefreshCw, AlertCircle } from "lucide-react";
 import Loading from "./loading";
@@ -75,7 +75,7 @@ export default function ProductsPage() {
             <Button
               variant="destructive"
               size="sm"
-              onClick={refetch}
+              onClick={() => refetch}
               className="rounded-xl gap-2"
             >
               <RefreshCw className="h-4 w-4" />
@@ -120,9 +120,10 @@ export default function ProductsPage() {
         {/* Products grid */}
         {!loading && !error && !isEmpty && (
           <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            {products.map((product) => {
+              return (<ProductCard key={product._id} product={product} />)
+
+            })}
           </div>
         )}
       </div>

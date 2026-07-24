@@ -41,6 +41,7 @@ export const useCartStore = create<CartStore>()(
             cartItems: [],
 
             addItem: (item) =>
+
                 set((state) => {
                     const index = state.cartItems.findIndex(
                         (i) =>

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 export default function Loading() {
     const t = useTranslations("product")
     return (
-        <div className="min-h-screen w-screen bg-zinc-50 dark:bg-zinc-950 inline-flex items-center justify-center">
+        <div className="min-h-screen dark:bg-zinc-950 inline-flex items-center justify-center">
             <div className="flex flex-col items-center gap-4 ">
                 <div className="relative h-12 w-12">
                     <div className="absolute inset-0 rounded-full border-2 border-zinc-200 dark:border-zinc-800" />

@@ -96,6 +96,7 @@ export default function ProductPage() {
     const addToCartHandler = () => {
         if (selectedVariant) {
             addItem({
+                variantId: selectedVariant._id,
                 productId: product._id,
                 quantity,
                 selectedColor: selectedVariant.color!
@@ -114,7 +115,7 @@ export default function ProductPage() {
 
     // ── UI ────────────────────────────────────────────────────────────────────
     return (
-        <div className="min-h-screen bg-white dark:bg-zinc-950 font-sans">
+        <div className="min-h-screen bg-zinc-100 w-screen dark:bg-zinc-950 font-sans">
             {/* ── Breadcrumb ── */}
             <div className="border-b border-zinc-100 dark:border-zinc-800/60">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-2 text-xs text-zinc-400">
@@ -427,7 +428,7 @@ export default function ProductPage() {
                         </TabsList>
 
                         <TabsContent value="description" className="mt-0">
-                            <div className="max-w-3xl bg-zinc-50 dark:bg-zinc-900 rounded-xl p-2 mx-auto">
+                            <div className="max-w-3xl bg-background dark:bg-zinc-900 rounded-xl p-2 mx-auto">
                                 <p className="text-zinc-600 text-center dark:text-zinc-400 leading-relaxed text-base">
                                     {product.description}
                                 </p>
@@ -439,7 +440,7 @@ export default function ProductPage() {
                                 <p className="text-zinc-400 text-sm ">{t("noSpecs")}</p>
                             ) : (
                                 <div className="max-w-2xl divide-y mx-auto 
-                                bg-zinc-50
+                                bg-background
                                  divide-zinc-100 dark:divide-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-xl overflow-hidden">
                                     {specs.map(([key, value]) => (
                                         <div

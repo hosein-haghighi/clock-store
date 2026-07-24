@@ -30,6 +30,6 @@ cartRouter.delete("/items/:productId", removeCartItem);
 cartRouter.delete("/", clearCart);
 
 
-cartRouter.post("/merge", mergeCart);  // ← اضافه شد
+cartRouter.post("/merge", mergeCart);
 
 export default cartRouter;

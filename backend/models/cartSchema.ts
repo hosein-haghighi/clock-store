@@ -2,6 +2,7 @@ import mongoose, { Schema, Types, Document } from "mongoose";
 
 export interface ICartItem {
     productId: Types.ObjectId;
+    variantId: Types.ObjectId;
     quantity: number;
     selectedColor?: {
         name: string;
@@ -22,6 +23,10 @@ const CartItemSchema = new Schema<ICartItem>(
             type: Schema.Types.ObjectId,
             ref: "Product",
             required: true,
+        },
+        variantId: {
+            type: Schema.Types.ObjectId,
+            required: true
         },
         quantity: {
             type: Number,
