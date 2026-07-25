@@ -53,7 +53,7 @@ export interface Order {
 
 export const orderService = {
     create: async (payload: CreateOrderPayload): Promise<Order> => {
-        const { data } = await api.post("/order", payload);
+        const { data } = await api.post("/orders", payload);
         return data.data ?? data; // adjust based on your API's response envelope
     },
 

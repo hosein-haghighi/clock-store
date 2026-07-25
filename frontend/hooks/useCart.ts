@@ -98,34 +98,20 @@ export const useCart = () => {
         if (prev === false && isAuthenticated) {
             if (offlineCartItems.length > 0) {
                 mergeMutation.mutate(offlineCartItems);
+                clearOfflineItems()
             }
         }
 
         // logout: prev was true, now false
         if (prev === true && !isAuthenticated) {
-            const serverItems = queryClient.getQueryData<DetailedCartItemType[]>(["cart"]);
-            if (serverItems?.length) {
-                // convert DetailedCartItemType → CartItemType for Zustand
-                const offlineItems: CartItemType[] = serverItems.map((i) => ({
-                    productId: i.productId,
-                    variantId: i.variantId,
-                    quantity: i.quantity,
-                    selectedColor: i.selectedColor,
-                    stock: i.stock,
-                }));
-                setOfflineItems(offlineItems);
-            }
+            clearOfflineItems()
             queryClient.removeQueries({ queryKey: ["cart"] });
         }
 
         prevAuthRef.current = isAuthenticated;
     }, [isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    useEffect(() => {
 
-        clearOfflineItems()
-
-    }, [isAuthenticated, clearOfflineItems])
     // ───────────────────────────────────────
     // addItem
     // ───────────────────────────────────────

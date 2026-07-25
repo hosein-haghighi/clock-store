@@ -18,6 +18,7 @@ const en: MessagesType = {
         alreadyHaveAccount: "Already have an account?"
     },
     nav: {
+        orders: "Orders",
         contact: "Contact",
         repair: "Repair",
         cart: "Cart"
@@ -88,6 +89,29 @@ const en: MessagesType = {
         checkout: "Proceed to Checkout",
         continueShopping: "← Continue Shopping",
     },
+    // messages/en.json
+
+    "Orders": {
+        "title": "My Orders",
+        "orderCount": "{count, plural, one {# order} other {# orders}}",
+        "noOrders": "No orders yet",
+        "noOrdersDescription": "Once you place an order, you'll be able to track its status here.",
+        "browseCollection": "Browse the collection",
+        "loadError": "Couldn't load your orders. Try refreshing the page.",
+        "viewDetails": "View details",
+        "cancel": "Cancel",
+        "cancelling": "Cancelling…",
+        "qty": "Qty {count}",
+        "moreItems": "{count, plural, one {+# more item} other {+# more items}}",
+        "status": {
+            "pending": "Pending",
+            "processing": "Processing",
+            "shipped": "Shipped",
+            "delivered": "Delivered",
+            "cancelled": "Cancelled"
+        }
+    }
+    ,
     checkout: {
 
         "securePayment": "Secure payment with SSL encryption",

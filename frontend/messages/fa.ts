@@ -16,6 +16,7 @@ const fa = {
         alreadyHaveAccount: "قبلاً ثبت نام کرده‌اید؟"
     },
     nav: {
+        orders: "سفارش ها",
         contact: "تماس",
         repair: "تعمیرات",
         cart: "سبد خرید"
@@ -84,6 +85,28 @@ const fa = {
         invalidPromo: "کد تخفیف نامعتبر است",
         checkout: "ادامه و پرداخت",
         continueShopping: "← ادامه خرید",
+    },
+
+    "Orders": {
+        "title": "سفارش‌های من",
+        "orderCount": "{count, plural, one {# سفارش} other {# سفارش}}",
+        "noOrders": "هنوز سفارشی ثبت نشده",
+        "noOrdersDescription": "پس از ثبت سفارش، می‌توانید وضعیت آن را از همین‌جا پیگیری کنید.",
+        "browseCollection": "مشاهده مجموعه",
+        "loadError": "بارگذاری سفارش‌ها ممکن نشد. صفحه را دوباره بارگذاری کنید.",
+        "viewDetails": "مشاهده جزئیات",
+        "cancel": "لغو سفارش",
+        "cancelling": "در حال لغو…",
+        "qty": "تعداد {count}",
+        "moreItems": "{count, plural, one {+# کالای دیگر} other {+# کالای دیگر}}",
+        "status": {
+            "pending": "در انتظار",
+            "processing": "در حال پردازش",
+            "shipped": "ارسال شده",
+            "delivered": "تحویل شده",
+            "cancelled": "لغو شده"
+        }
+
     },
     checkout: {
 

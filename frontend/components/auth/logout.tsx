@@ -4,13 +4,16 @@ import { Button } from '../ui/button'
 import { useLogout } from '@/hooks/useLogout';
 import { LogOutIcon } from 'lucide-react';
 import { useTranslations } from "next-intl";
+import { redirect } from 'next/navigation';
 export function Logout() {
+
     const t = useTranslations("auth")
     const { mutate: logout } = useLogout()
     const onLogoutHandle = async () => {
         logout(undefined, {
             onSuccess: (data) => {
                 toast.success(data.message);
+                redirect("/");
             },
 
             onError: (err: any) => {

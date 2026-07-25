@@ -23,17 +23,35 @@ export const Nav = () => {
     const { user, loading, isAuthenticated } = useUser();
     const pathName = usePathname()
 
-    const navItems = [
+    const navItems = isAuthenticated ? [
         {
             name: t("contact"),
             href: "/contact",
         },
 
         {
+            name: t("orders"),
+            href: "/orders",
+        }
+        ,
+        {
             name: t("cart"),
             href: "/cart",
         }
-    ]
+    ] :
+        [
+            {
+                name: t("contact"),
+                href: "/contact",
+            },
+
+
+            {
+                name: t("cart"),
+                href: "/cart",
+            }
+        ]
+
 
     return (
 
