@@ -180,7 +180,7 @@ export default function CartPage() {
                                             </div>
                                             {/* حذف کامل آیتم */}
                                             <button
-                                                onClick={() => removeItem({ ...item, quantity: item.quantity })}
+                                                onClick={() => removeItem({ variantId: item.variantId, productId: item.productId })}
                                                 className="shrink-0 h-7 w-7 rounded-full flex items-center justify-center cursor-pointer text-zinc-300 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all duration-150"
                                             >
                                                 <Trash2 className="h-3.5 w-3.5" />

@@ -233,7 +233,6 @@ export const useCart = () => {
     const removeItem = async (item: {
         productId: string;
         variantId: string;
-        selectedColor: { name: string; hex: string };
     }) => {
         if (!isAuthenticated) {
             removeItemOffline({

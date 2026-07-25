@@ -1,7 +1,7 @@
 import { CreateProductPayload } from "@/hooks/useProducts";
 import api from "@/lib/api";
 
-export const getProductByUrl = async (params) => {
+export const getProductByUrl = async (params: URLSearchParams) => {
     const { data } = await api.get(`/products?${params.toString()}`)
     return data;
 }

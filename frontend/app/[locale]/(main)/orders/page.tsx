@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useMyOrders, useCancelOrder } from "@/hooks/useOrder";
 import { formatOrderDate } from "@/lib/formatOrderDate";
+import Link from "next/link";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -25,7 +26,7 @@ interface OrderItem {
 
 interface Order {
     _id: string;
-    items: OrderItem[];
+    items: any[];
     totalPrice: number;
     status: OrderStatus;
     createdAt: string;
@@ -149,7 +150,7 @@ function EmptyState() {
                 {t("noOrdersDescription")}
             </p>
             <Button className="mt-6" size="sm" asChild>
-                <a href="/">{t("browseCollection")}</a>
+                <Link href="/">{t("browseCollection")}</Link>
             </Button>
         </div>
     );
@@ -158,7 +159,8 @@ function EmptyState() {
 export default function OrdersPage() {
     const t = useTranslations("Orders");
     const { data, isLoading, isError } = useMyOrders();
-    const orders: Order[] = data ?? [];
+    console.log({ data })
+    const orders = data ?? [];
 
     return (
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
@@ -192,7 +194,13 @@ export default function OrdersPage() {
             ) : (
                 <div className="flex flex-wrap gap-3 sm:gap-4">
                     {orders.map((order) => (
-                        <OrderRow key={order._id} order={order} />
+                        <OrderRow key={order._id} order={{
+                            _id: order._id,
+                            items: order.items,
+                            totalPrice: order.totalPrice,
+                            status: order.status,
+                            createdAt: order.createdAt
+                        }} />
                     ))}
                 </div>
             ))}

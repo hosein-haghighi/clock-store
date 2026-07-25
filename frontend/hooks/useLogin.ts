@@ -7,8 +7,14 @@ type LoginInput = {
     email: string;
     password: string;
 };
+type Res = {
+    data: any,
+    message: string,
+    status: string
+}
 
-const loginUser = async (data: LoginInput): Promise<User> => {
+
+const loginUser = async (data: LoginInput): Promise<Res> => {
 
     const { data: resData } = await api.post(`${API}/api/v1/auth/login`, data)
 
@@ -21,7 +27,8 @@ export function useLogin() {
     return useMutation({
         mutationFn: loginUser,
 
-        onSuccess: (data) => {
+        onSuccess: (data: Res) => {
+            console.log({ data })
             // sync user in cache
             queryClient.setQueryData(["me"], data.data);
         },

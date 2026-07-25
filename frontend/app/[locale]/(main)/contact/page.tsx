@@ -37,9 +37,7 @@ const contactSchema = z.object({
         .regex(/^(\+98|0)?9\d{9}$/, "شماره موبایل معتبر وارد کنید")
         .optional()
         .or(z.literal("")),
-    subject: z.enum(["purchase", "repair", "warranty", "wholesale", "other"], {
-        required_error: "موضوع را انتخاب کنید",
-    }),
+    subject: z.enum(["purchase", "repair", "warranty", "wholesale", "other"]),
     message: z
         .string()
         .min(20, "پیام باید حداقل ۲۰ کاراکتر باشد")
@@ -55,8 +53,8 @@ const contactInfo = [
         icon: MapPin,
         title: "آدرس",
         lines: [
-            { text: "تهران، خیابان ولیعصر، نرسیده به میدان ونک" },
-            { text: "پاساژ ساعت طلایی، واحد ۱۱" }
+            { text: "تهران، خیابان ولیعصر، نرسیده به میدان ونک", href: '' },
+            { text: "پاساژ ساعت طلایی، واحد ۱۱", href: '' }
         ],
         badge: "حضوری",
     },
@@ -85,7 +83,7 @@ const contactInfo = [
         name: "clock",
         icon: Clock,
         title: "ساعت کاری",
-        lines: [{ text: "شنبه تا چهارشنبه: ۱۰:۰۰ – ۲۱:۰۰" }, { text: "پنجشنبه: ۱۰:۰۰ – ۱۸:۰۰" }, { text: "جمعه: تعطیل" }],
+        lines: [{ text: "شنبه تا چهارشنبه: ۱۰:۰۰ – ۲۱:۰۰", href: '' }, { text: "پنجشنبه: ۱۰:۰۰ – ۱۸:۰۰" }, { text: "جمعه: تعطیل", href: '' }],
         badge: "فروشگاه",
     },
 ];
@@ -171,7 +169,7 @@ export default function ContactPage() {
                             </CardHeader>
                             {lines.map(({ text, href }, index) => {
 
-                                const tag = href ?
+                                const tag = href != "" ?
 
                                     <a href={href} className="text-muted-foreground text-sm  hover:underline">
                                         {text}

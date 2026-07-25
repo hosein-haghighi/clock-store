@@ -19,12 +19,17 @@ api.interceptors.response.use(
 
         return res
     },
-    async (error: AxiosError) => {
+    async (error: AxiosError<{
+        status: string;
+        code?: string;
+        message?: string;
+    }>) => {
         const original = error.config as InternalAxiosRequestConfig & {
             _retry?: boolean;
         };
 
         if (error.response?.status !== 401 || original._retry || error.response?.data?.code !== "TOKEN_EXPIRED") {
+
             const reject = Promise.reject(error);
             return reject
         }

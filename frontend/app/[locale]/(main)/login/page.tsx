@@ -43,7 +43,6 @@ function LoginPage() {
             },
             {
                 onSuccess: (data) => {
-                    toast.success(data.message);
                     router.back()
                 },
 
