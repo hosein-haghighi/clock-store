@@ -35,7 +35,6 @@ dist/
 build/
 .next/
 out/
-coverage/
 
 # -------------------------
 # React / Frontend
@@ -54,9 +53,11 @@ backend/node_modules/
 backend/dist/
 backend/build/
 
-# Uploads (optional)
-uploads/
-public/uploads/
+# Uploads — NOTE: only ignore if you switch to Cloudinary/S3.
+# Keeping these tracked for now since Render's disk is ephemeral
+# and local uploads won't survive a redeploy otherwise.
+# uploads/
+# public/uploads/
 
 # -------------------------
 # MongoDB

@@ -2,9 +2,11 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/userModel.js";
 import { RefreshToken } from "../models/refreshTokenModel.js";
 import type { ResType } from "../types/res.js";
+import { getErrorMessage } from "../utils/errorHandler.js";
+import type { RequestHandler } from "express";
 
 
-export const refreshAccessToken = async (req: any, res: ResType) => {
+export const refreshAccessToken: RequestHandler = async (req, res) => {
 
     try {
         const refreshToken = req.cookies.refreshToken;
@@ -128,7 +130,7 @@ export const refreshAccessToken = async (req: any, res: ResType) => {
     } catch (error) {
         return res.status(500).json({
             status: "fail",
-            message: error?.message ?? error,
+            message: getErrorMessage(error)
         });
     }
 };

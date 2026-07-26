@@ -1,8 +1,17 @@
-import type { Request } from "express";
+import type { Response, Request, RequestHandler } from "express";
 import type { ResType } from "../types/res.js";
 import { Cart, type ICartItem } from "../models/cartSchema.js";
 import Product from "../models/productSchema.js";
+// types/authRequest.ts
+import type { Types } from "mongoose";
+import { getErrorMessage } from "../utils/errorHandler.js";
 
+export interface AuthRequest extends Request {
+    user: {
+        _id: Types.ObjectId;
+        role?: string;
+    };
+}
 // helper: populate cart items با اطلاعات به‌روز از product
 const populateCartItems = async (items: ICartItem[]) => {
     const productIds = items.map((i) => i.productId);
@@ -33,13 +42,14 @@ const populateCartItems = async (items: ICartItem[]) => {
 };
 
 // GET /api/cart
-export const getCart = async (req: Request, res: ResType) => {
-    const userId = req.user._id;
-
+export const getCart: RequestHandler = async (req, res) => {
+    const authReq = req as AuthRequest;
+    const typedRes = res as Response<ResType>;
+    const userId = authReq.user._id;
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
-        return res.status(200).json({
+        return typedRes.status(200).json({
             status: "success",
             message: "Cart is empty",
             data: { items: [] },
@@ -48,7 +58,7 @@ export const getCart = async (req: Request, res: ResType) => {
 
     const populatedItems = await populateCartItems(cart.items);
 
-    res.status(200).json({
+    typedRes.status(200).json({
         status: "success",
         message: "Getting cart data was successful",
         data: { ...cart.toObject(), items: populatedItems },
@@ -56,18 +66,21 @@ export const getCart = async (req: Request, res: ResType) => {
 };
 
 // POST /api/cart/items
-export const addToCart = async (req: Request, res: ResType) => {
-    const userId = req.user._id;
-    const { productId, variantId, quantity } = req.body;
+export const addToCart: RequestHandler = async (req, res) => {
+    const authReq = req as AuthRequest;
+    const typedRes = res as Response<ResType>;
+
+    const userId = authReq.user._id;
+    const { productId, variantId, quantity } = authReq.body;
 
     const product = await Product.findById(productId);
     if (!product) {
-        return res.status(404).json({ status: "fail", message: "Product not found" });
+        return typedRes.status(404).json({ status: "fail", message: "Product not found" });
     }
 
     const variant = product.variants.id(variantId);
     if (!variant) {
-        return res.status(404).json({ status: "fail", message: "Variant not found" });
+        return typedRes.status(404).json({ status: "fail", message: "Variant not found" });
     }
 
     let cart = await Cart.findOne({ userId });
@@ -98,7 +111,7 @@ export const addToCart = async (req: Request, res: ResType) => {
 
     const populatedItems = await populateCartItems(cart.items);
 
-    res.status(200).json({
+    typedRes.status(200).json({
         status: "success",
         message: "Adding to cart was successful",
         data: { ...cart.toObject(), items: populatedItems },
@@ -106,14 +119,16 @@ export const addToCart = async (req: Request, res: ResType) => {
 };
 
 // PATCH /api/cart/items/:productId
-export const updateCartItem = async (req: Request, res: ResType) => {
-    const userId = req.user._id;
-    const { productId } = req.params;
-    const { variantId, quantity } = req.body;
+export const updateCartItem: RequestHandler = async (req, res) => {
+    const authReq = req as AuthRequest;
+    const typedRes = res as Response<ResType>;
+    const userId = authReq.user._id;
+    const { productId } = authReq.params;
+    const { variantId, quantity } = authReq.body;
 
     const cart = await Cart.findOne({ userId });
     if (!cart) {
-        return res.status(404).json({ status: "fail", message: "Cart not found" });
+        return typedRes.status(404).json({ status: "fail", message: "Cart not found" });
     }
 
     const item = cart.items.find(
@@ -122,7 +137,7 @@ export const updateCartItem = async (req: Request, res: ResType) => {
             i.variantId?.toString() === variantId
     );
     if (!item) {
-        return res.status(404).json({ status: "fail", message: "Item not found" });
+        return typedRes.status(404).json({ status: "fail", message: "Item not found" });
     }
 
     const product = await Product.findById(productId);
@@ -133,7 +148,7 @@ export const updateCartItem = async (req: Request, res: ResType) => {
 
     const populatedItems = await populateCartItems(cart.items);
 
-    res.status(200).json({
+    typedRes.status(200).json({
         status: "success",
         message: "Updating the cart was successful",
         data: { ...cart.toObject(), items: populatedItems },
@@ -141,13 +156,15 @@ export const updateCartItem = async (req: Request, res: ResType) => {
 };
 
 // DELETE /api/cart/items/:productId
-export const removeCartItem = async (req: Request, res: ResType) => {
-    const userId = req.user._id;
-    const { productId } = req.params;
-    const { variantId } = req.body;
+export const removeCartItem: RequestHandler = async (req, res) => {
+    const authReq = req as AuthRequest;
+    const typedRes = res as Response<ResType>;
+    const userId = authReq.user._id;
+    const { productId } = authReq.params;
+    const { variantId } = authReq.body;
 
     if (!variantId) {
-        return res.status(400).json({
+        return typedRes.status(400).json({
             status: "fail",
             message: "please check the body for this pattern: variantId",
         });
@@ -155,7 +172,7 @@ export const removeCartItem = async (req: Request, res: ResType) => {
 
     const cart = await Cart.findOne({ userId });
     if (!cart) {
-        return res.status(404).json({ status: "fail", message: "Cart not found" });
+        return typedRes.status(404).json({ status: "fail", message: "Cart not found" });
     }
 
     cart.items = cart.items.filter(
@@ -170,7 +187,7 @@ export const removeCartItem = async (req: Request, res: ResType) => {
 
     const populatedItems = await populateCartItems(cart.items);
 
-    res.status(200).json({
+    typedRes.status(200).json({
         status: "success",
         message: "Removing the cart item was successful",
         data: { ...cart.toObject(), items: populatedItems },
@@ -178,8 +195,12 @@ export const removeCartItem = async (req: Request, res: ResType) => {
 };
 
 // DELETE /api/cart
-export const clearCart = async (req: Request, res: ResType) => {
-    const userId = req.user._id;
+export const clearCart: RequestHandler = async (req, res) => {
+
+    const authReq = req as AuthRequest;
+    const typedRes = res as Response<ResType>;
+
+    const userId = authReq.user._id;
 
     await Cart.findByIdAndUpdate({ userId }, { $set: { items: [] } });
 
@@ -187,10 +208,12 @@ export const clearCart = async (req: Request, res: ResType) => {
 };
 
 // POST /api/cart/merge
-export const mergeCart = async (req: Request, res: ResType) => {
+export const mergeCart: RequestHandler = async (req, res) => {
+    const authReq = req as AuthRequest;
+    const typedRes = res as Response<ResType>;
     try {
-        const userId = req.user._id;
-        const localItems: ICartItem[] = req.body.items ?? [];
+        const userId = authReq.user._id;
+        const localItems: ICartItem[] = authReq.body.items ?? [];
         let dbCart = await Cart.findOne({ userId });
         if (!dbCart) {
             dbCart = new Cart({ userId, items: [] });
@@ -241,7 +264,7 @@ export const mergeCart = async (req: Request, res: ResType) => {
 
         if (!dbCart.items.length) {
             await Cart.deleteOne({ userId });
-            return res.status(200).json({
+            return typedRes.status(200).json({
                 status: "success",
                 data: { items: [] },
                 message: "Cart is empty after merge",
@@ -252,25 +275,28 @@ export const mergeCart = async (req: Request, res: ResType) => {
 
         const populatedItems = await populateCartItems(dbCart.items);
 
-        return res.status(200).json({
+        return typedRes.status(200).json({
             status: "success",
             data: { ...dbCart.toObject(), items: populatedItems },
             message: "Cart merged successfully",
         });
     } catch (error) {
-        return res.status(400).json({
+        return typedRes.status(400).json({
             status: "fail",
-            message: error?.message ?? error,
+            message: getErrorMessage(error),
         });
     }
 };
 
 // POST /api/cart/getDetails
-export const getCartDetails = async (req: Request, res: ResType) => {
-    const items: ICartItem[] = req.body.items ?? [];
+export const getCartDetails: RequestHandler = async (req, res) => {
+    const authReq = req as AuthRequest;
+    const typedRes = res as Response<ResType>;
+
+    const items: ICartItem[] = authReq.body.items ?? [];
 
     if (!items.length) {
-        return res.status(200).json({
+        return typedRes.status(200).json({
             status: "success",
             data: [],
             message: "The product with this id is not available",
@@ -279,7 +305,7 @@ export const getCartDetails = async (req: Request, res: ResType) => {
 
     const populatedItems = await populateCartItems(items);
 
-    return res.status(200).json({
+    return typedRes.status(200).json({
         status: "success",
         data: populatedItems,
         message: "The population of the cart was successful",

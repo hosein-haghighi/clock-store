@@ -1,12 +1,11 @@
-import type { Request } from "express"
+import type { Request, RequestHandler } from "express"
 import { User } from "../models/userModel.js"
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 import { RefreshToken } from "../models/refreshTokenModel.js";
 import type { ResType } from "../types/res.js";
-
-export const changePasswordForgotten = async (req: any, res: ResType) => {
-
+import { getErrorMessage } from "../utils/errorHandler.js";
+export const changePasswordForgotten: RequestHandler = async (req, res) => {
     try {
         const { newPassword, passwordResetToken } = req.body;
         if (!passwordResetToken) {
@@ -23,8 +22,15 @@ export const changePasswordForgotten = async (req: any, res: ResType) => {
         }
 
         const decoded = await jwt.verify(passwordResetToken, process.env.ACCESS_SECRET!);
-        const user = await User.findOne({ _id: decoded.id })
-        if (user.passwordResetToken !== passwordResetToken) {
+        if (typeof decoded === "string" || !("id" in decoded)) {
+            return res.status(401).json({
+                status: "fail",
+                message: "Invalid token payload",
+            });
+        }
+
+        const user = await User.findOne({ _id: decoded.id });
+        if (!user || user.passwordResetToken !== passwordResetToken) {
             return (res.status(403).json({
                 status: "fail",
                 message: "credential fail!"
@@ -36,15 +42,15 @@ export const changePasswordForgotten = async (req: any, res: ResType) => {
                 message: "The user not found!"
             }))
         }
-        if (user.passwordResetTokenExpiresAt.getTime() < Date.now()) {
+        if (!user.passwordResetTokenExpiresAt || user.passwordResetTokenExpiresAt.getTime() < Date.now()) {
             return (res.status(403).json({
                 status: "fail",
                 message: "token is expired!"
             }))
         }
         user.password = newPassword
-        user.passwordResetToken = undefined;
-        user.passwordResetTokenExpiresAt = undefined;
+        delete user.passwordResetToken;
+        delete user.passwordResetTokenExpiresAt;
         await user.save()
         res.status(200).json({
             status: "success",
@@ -53,14 +59,14 @@ export const changePasswordForgotten = async (req: any, res: ResType) => {
     } catch (error) {
         res.status(401).json({
             status: "fail",
-            message: error.message ?? error
+            message: getErrorMessage(error)
         });
     }
 
 
 
 }
-export const forgotPassword = async (req: any, res: ResType) => {
+export const forgotPassword: RequestHandler = async (req, res) => {
 
     const email = req.body.email
 
@@ -93,11 +99,11 @@ export const forgotPassword = async (req: any, res: ResType) => {
         });
 
     } catch (error) {
-        res.status(401).json({ message: error.message ?? error, status: "fail" });
+        res.status(401).json({ message: getErrorMessage(error) ?? error, status: "fail" });
     }
 
 }
-export const signup = async (req: Request, res: ResType) => {
+export const signup: RequestHandler = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
@@ -175,7 +181,7 @@ export const signup = async (req: Request, res: ResType) => {
             maxAge: parseInt(process.env.ACCESS_TOKEN_EXPIRY_MS!)
         });
 
-        // safe ResType
+        // safe express.Response<ResType>
         res.status(201).json({
             status: "success",
             message: "Happy to join us :)",
@@ -189,11 +195,11 @@ export const signup = async (req: Request, res: ResType) => {
     } catch (error: any) {
         res.status(500).json({
             status: "fail",
-            message: error.message,
+            message: getErrorMessage(error)
         });
     }
 };
-export const login = async (req: Request, res: ResType) => {
+export const login: RequestHandler = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -265,11 +271,11 @@ export const login = async (req: Request, res: ResType) => {
     } catch (error: any) {
         res.status(500).json({
             status: "fail",
-            message: error.message,
+            message: getErrorMessage(error)
         });
     }
 };
-export const logout = async (req: any, res: ResType) => {
+export const logout: RequestHandler = async (req, res) => {
     try {
         const token = req.cookies?.refreshToken;
 

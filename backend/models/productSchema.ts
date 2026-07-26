@@ -20,20 +20,14 @@ export interface IVariant {
 }
 
 export interface IProduct extends Document {
-    title: {
-        en: string;
-        fa: string;
-    },
-    description: {
-        en: string;
-        fa: string;
-    },
+    title: string,
+    description: string
     slug: string;
     brand: string;
     watchModel: string;
     images: string[];
     updateRating(): void;
-    variants: IVariant[];
+    variants: Types.DocumentArray<IVariant>;
     category: "luxury" | "sport" | "casual" | "smart" | "classic";
     gender: "men" | "women" | "unisex";
     specifications: Map<string, string>;
@@ -112,13 +106,11 @@ const variantSchema = new Schema<IVariant>(
 const productSchema = new Schema<IProduct>(
     {
         title: {
-            en: { type: String, required: true, trim: true },
-            fa: { type: String, required: true, trim: true },
+            type: String, required: true, trim: true
         },
 
         description: {
-            en: { type: String, required: true },
-            fa: { type: String, required: true },
+            type: String, required: true
         },
 
         slug: {

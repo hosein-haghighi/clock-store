@@ -270,7 +270,7 @@ orderSchema.index({
 });
 
 const Order =
-    mongoose.models.Order ||
+    (mongoose.models.Order as mongoose.Model<IOrder>) ||
     mongoose.model<IOrder>("Order", orderSchema);
 
 export default Order;

@@ -14,4 +14,8 @@ type ApiResponse<T = unknown> = {
     }
 }
 
-export type ResType<T = unknown> = Response<ApiResponse<T>>
+export interface ResType<T = unknown> {
+    status: "success" | "fail";
+    message?: string;
+    data?: T;
+}

@@ -2,10 +2,27 @@ import type { NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/userModel.js";
 import type { ResType } from "../types/res.js";
+import { type Response } from "express"
+export type ErrorCode =
+    | "AUTHENTICATION_REQUIRED"
+    | "TOKEN_EXPIRED"
+    | "TOKEN_INVALID"
+    | "FORBIDDEN"
+    | "NOT_FOUND"
+    | "USER_NOT_FOUND"
+    | "VALIDATION_ERROR"
+    | "INVALID_TOKEN"
+    | "AUTHENTICATION_FAILED";
 
+export interface AuthResType<T = unknown> {
+    status: "success" | "fail";
+    code?: ErrorCode;
+    message?: string;
+    data?: T;
+}
 export const protect = async (
     req: any,
-    res: ResType,
+    res: Response<AuthResType>,
     next: NextFunction
 ) => {
     try {
@@ -71,7 +88,7 @@ export const protect = async (
         }
 
         return res.status(500).json({
-            status: "error",
+            status: "fail",
             code: "AUTHENTICATION_FAILED",
             message: "Authentication failed",
         });
@@ -80,7 +97,7 @@ export const protect = async (
 
 export const isUserAdmin = (
     req: any,
-    res: ResType,
+    res: Response<AuthResType>,
     next: NextFunction
 ) => {
     if (req.user?.role === "admin") {

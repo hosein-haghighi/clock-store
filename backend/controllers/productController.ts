@@ -1,9 +1,10 @@
-import type { Request } from "express";
+import type { Request, RequestHandler } from "express";
 import mongoose from "mongoose";
 import type { ResType } from "../types/res.js";
 import type { IProduct, IReview } from "../models/productSchema.js";
 import Product from "../models/productSchema.js";
 import { deleteTemp, moveTempToProducts } from "../utils/uploadsUtils.js";
+import { getErrorMessage } from "../utils/errorHandler.js";
 
 // ─── Helper ───────────────────────────────────────────────────────────────────
 
@@ -17,7 +18,7 @@ const isValidObjectId = (id: string) => mongoose.Types.ObjectId.isValid(id);
  * مرتب‌سازی: newest | price | -price | rating
  * صفحه‌بندی: page, limit
  */
-export const getProducts = async (req: Request, res: ResType) => {
+export const getProducts: RequestHandler = async (req, res) => {
     try {
         const {
             brand,
@@ -79,7 +80,7 @@ export const getProducts = async (req: Request, res: ResType) => {
             },
         });
     } catch (error) {
-        res.status(500).json({ message: error?.message || error, status: "fail" });
+        res.status(500).json({ message: getErrorMessage(error), status: "fail" });
     }
 };
 
@@ -87,7 +88,8 @@ export const getProducts = async (req: Request, res: ResType) => {
  * GET /api/products/featured
  * محصولات ویژه صفحه اصلی
  */
-export const getFeaturedProducts = async (_req: Request, res: ResType) => {
+export const getFeaturedProducts: RequestHandler = async (req, res) => {
+
     try {
         const products = await Product.find({ isActive: true, isFeatured: true })
             .sort({ createdAt: -1 })
@@ -96,7 +98,7 @@ export const getFeaturedProducts = async (_req: Request, res: ResType) => {
 
         res.json({ data: products, status: "success", message: "getting featured products was successful" });
     } catch (error) {
-        res.status(500).json({ message: error?.message || error, status: "fail" });
+        res.status(500).json({ message: getErrorMessage(error), status: "fail" });
     }
 };
 
@@ -104,7 +106,8 @@ export const getFeaturedProducts = async (_req: Request, res: ResType) => {
  * GET /api/products/:slug
  * جزئیات محصول — reviews هم میاد
  */
-export const getProductBySlug = async (req: Request, res: ResType) => {
+export const getProductBySlug: RequestHandler = async (req, res) => {
+
     try {
         const product = await Product.findOne({
             slug: String(req.params.slug),
@@ -117,7 +120,7 @@ export const getProductBySlug = async (req: Request, res: ResType) => {
 
         res.json({ data: product, status: "success", message: "The product getting was successful" });
     } catch (error) {
-        res.status(500).json({ message: error?.message || error, status: "fail" });
+        res.status(500).json({ message: getErrorMessage(error), status: "fail" });
     }
 };
 
@@ -125,7 +128,8 @@ export const getProductBySlug = async (req: Request, res: ResType) => {
  * POST /api/products/:id/reviews
  * ثبت نظر — فقط کاربر لاگین‌کرده
  */
-export const createProductReview = async (req: Request, res: ResType) => {
+export const createProductReview: RequestHandler = async (req, res) => {
+
     try {
         const { rating, comment } = req.body;
 
@@ -164,7 +168,7 @@ export const createProductReview = async (req: Request, res: ResType) => {
 
         res.status(201).json({ message: "your review was successfully submitted", status: "success", data: newProduct });
     } catch (error) {
-        res.status(500).json({ message: error?.message || error, status: "fail" });
+        res.status(500).json({ message: getErrorMessage(error), status: "fail" });
     }
 };
 
@@ -174,7 +178,8 @@ export const createProductReview = async (req: Request, res: ResType) => {
  * POST /api/admin/products
  * ایجاد محصول جدید
  */
-export const createProduct = async (req: Request, res: ResType) => {
+export const createProduct: RequestHandler = async (req, res) => {
+
     const files = req.files as Express.Multer.File[];
     const imageUrls = files?.map(file => `/uploads/products/${file.filename}`) || [];
 
@@ -240,7 +245,7 @@ export const createProduct = async (req: Request, res: ResType) => {
  * PUT /api/admin/products/:id
  * ویرایش محصول — همه فیلدها قابل تغییرن از جمله variants
  */
-export const updateProduct = async (req: Request, res: ResType) => {
+export const updateProduct: RequestHandler = async (req, res) => {
     try {
         if (!isValidObjectId(String(req.params.id))) {
             return res.status(400).json({ message: "invalid id", status: "fail" });
@@ -284,7 +289,7 @@ export const updateProduct = async (req: Request, res: ResType) => {
  * DELETE /api/admin/products/:id
  * soft delete — محصول غیرفعال میشه نه حذف واقعی
  */
-export const deleteProduct = async (req: Request, res: ResType) => {
+export const deleteProduct: RequestHandler = async (req, res) => {
     try {
         if (!isValidObjectId(String(req.params.id))) {
             return res.status(400).json({ message: "invalid id", status: "fail" });
@@ -300,7 +305,7 @@ export const deleteProduct = async (req: Request, res: ResType) => {
 
         res.json({ message: "The product deleted successfully", status: "success", data: newProduct });
     } catch (error) {
-        res.status(500).json({ message: error?.message || error, status: "fail" });
+        res.status(500).json({ message: getErrorMessage(error), status: "fail" });
     }
 };
 
@@ -308,7 +313,7 @@ export const deleteProduct = async (req: Request, res: ResType) => {
  * DELETE /api/admin/products/:id/reviews/:reviewId
  * حذف نظر نامناسب
  */
-export const deleteReview = async (req: Request, res: ResType) => {
+export const deleteReview: RequestHandler = async (req, res) => {
     try {
         const id = String(req.params.id);
         const reviewId = String(req.params.reviewId);
@@ -335,6 +340,6 @@ export const deleteReview = async (req: Request, res: ResType) => {
 
         res.json({ message: "The review deleted successfully", status: "success", data: newProduct });
     } catch (error) {
-        res.status(500).json({ message: error?.message || error, status: "fail" });
+        res.status(500).json({ message: getErrorMessage(error), status: "fail" });
     }
 };

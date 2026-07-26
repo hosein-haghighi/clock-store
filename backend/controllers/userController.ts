@@ -3,8 +3,9 @@ import { User } from "../models/userModel.js"
 import bcrypt from "bcryptjs"
 import { RefreshToken } from "../models/refreshTokenModel.js"
 import type { ResType } from "../types/res.js"
-
-export const getUsers = async (req: Request, res: ResType) => {
+import { getErrorMessage } from "../utils/errorHandler.js"
+import { type Response } from "express"
+export const getUsers = async (req: Request, res: Response<ResType>) => {
 
     try {
         const users = await User.find()
@@ -16,11 +17,11 @@ export const getUsers = async (req: Request, res: ResType) => {
     } catch (error) {
         res.status(400).json({
             status: "fail",
-            message: error?.message ?? error
+            message: getErrorMessage(error)
         })
     }
 }
-export const getMe = async (req: any, res: ResType) => {
+export const getMe = async (req: any, res: Response<ResType>) => {
     try {
         const user = req.user
         res.status(200).json({
@@ -31,12 +32,12 @@ export const getMe = async (req: any, res: ResType) => {
     } catch (error) {
         res.status(500).json({
 
-            message: error?.message ?? error,
+            message: getErrorMessage(error),
             status: "fail"
         })
     }
 }
-export const updateMe = async (req: any, res: ResType) => {
+export const updateMe = async (req: any, res: Response<ResType>) => {
     try {
         const { name, avatar, addresses } = req.body;
 
@@ -66,7 +67,7 @@ export const updateMe = async (req: any, res: ResType) => {
         });
     }
 };
-export const changePassword = async (req: any, res: ResType) => {
+export const changePassword = async (req: any, res: Response<ResType>) => {
     try {
         const { currentPassword, newPassword } = req.body;
 

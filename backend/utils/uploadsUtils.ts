@@ -14,13 +14,13 @@ export const moveTempToProducts = (files: Express.Multer.File[]) => {
         fs.renameSync(oldPath, newPath);
     }
 };
-export const deleteTemp = async (files) => {
+
+export const deleteTemp = async (files: Express.Multer.File[]) => {
     if (files?.length) {
-        for (const fisle of files) {
+        for (const file of files) {
             try {
                 fs.unlinkSync(file.path);
-            }
-            catch { }
+            } catch { }
         }
     }
-}
+};

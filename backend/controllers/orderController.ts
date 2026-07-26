@@ -3,14 +3,15 @@ import type { Request } from "express";
 import type { ResType } from "../types/res.js";
 import Product from "../models/productSchema.js";
 import Order from "../models/orderSchema.js";
+import type { AuthRequest } from "./cartController.js";
 
 type requestItemType = {
-    productId: number,
-    variantId: number,
+    productId: string,
+    variantId: string,
     quantity: number
 }
 // 1 post /
-export const createOrder = async (req: any, res: any) => {
+export const createOrder = async (req: AuthRequest, res: any) => {
     try {
         const userId = req.user._id;
         const { items, shippingAddress } = req.body;
@@ -46,14 +47,14 @@ export const createOrder = async (req: any, res: any) => {
                     message: "Not enough stock",
                 });
             }
-            const minPrice = variant.discountPrice ?? variant.price
+            const minPrice = variant.discountPrice ?? variant.price;
             orderItems.push({
                 productId: product._id,
                 title: product.title,
-                image: product.images[0],
+                image: product.images[0] ?? "",
                 price: minPrice,
                 quantity: item.quantity,
-                selectedColor: variant.color
+                selectedColor: variant.color.name,
             });
         }
 
