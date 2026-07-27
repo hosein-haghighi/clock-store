@@ -31,11 +31,16 @@ app.use("/api/v1/products", productRouter)
 app.use("/api/v1/orders", orderRouter)
 app.use("/api/v1/cart", cartRouter)
 
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is not defined in environment variables");
+}
+
 mongoose
-    .connect("mongodb://127.0.0.1:27017/clock-store")
-    .then(() => console.log("db connected successfully!"));
-
-
+    .connect(MONGODB_URI)
+    .then(() => console.log("db connected successfully!"))
+    .catch((err) => console.error("db connection error:", err));
 const PORT = 4000
 app.listen(PORT, "0.0.0.0", () => {
     console.log("server is running on the port: ", PORT)
