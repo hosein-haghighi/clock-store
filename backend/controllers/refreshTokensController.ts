@@ -109,7 +109,7 @@ export const refreshAccessToken: RequestHandler = async (req, res) => {
         const cookieBase = {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "lax" as const,
+            sameSite: "none" as const,
             path: "/",
         };
         res.cookie("accessToken", newAccessToken, {
