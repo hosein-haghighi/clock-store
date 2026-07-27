@@ -21,7 +21,8 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: ["https://amir-watch.vercel.app"],
+    // origin: ["https://amir-watch.vercel.app"],
+    origin: true,
     credentials: true
 }));
 app.set("query parser", "extended");
@@ -39,7 +40,7 @@ if (!MONGODB_URI) {
 }
 
 mongoose
-    .connect(MONGODB_URI)
+    .connect("mongodb://127.0.0.1:27017/clock-store")
     .then(() => console.log("db connected successfully!"))
     .catch((err) => console.error("db connection error:", err));
 

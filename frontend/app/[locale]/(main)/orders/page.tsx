@@ -61,8 +61,8 @@ function OrderRow({ order }: { order: Order }) {
     const previewItems = order.items.slice(0, 3);
 
     return (
-        <div className="group w-xs flex flex-col rounded-lg border border-border/60 bg-card transition-colors hover:border-border">
-            <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+        <div className="group w-xs flex p-4  flex-col rounded-lg border border-border/60 bg-card transition-colors hover:border-border">
+            <div className="flex flex-col gap-3  sm:flex-row sm:items-center sm:justify-between sm:p-5">
                 <div className="flex items-center gap-3">
                     <span className="font-mono text-xs tracking-wider text-muted-foreground" dir="ltr">
                         {order._id.slice(-8).toUpperCase()}
@@ -79,7 +79,7 @@ function OrderRow({ order }: { order: Order }) {
 
             <Separator className="bg-border/60" />
 
-            <div className="flex flex-col gap-3 p-4 sm:p-5">
+            <div className="flex flex-col gap-3  sm:p-5">
                 {previewItems.map((item) => {
                     const colorName = parseColorName(item.selectedColor);
                     return (
@@ -92,7 +92,7 @@ function OrderRow({ order }: { order: Order }) {
                                 />
                             </div>
                             <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-medium text-foreground">{item.title}</p>
+                                <p className="line-clamp-2 text-sm font-medium text-foreground">{item.title}</p>
                                 <p className="text-xs text-muted-foreground">
                                     {colorName && `${colorName} · `}
                                     {t("qty", { count: item.quantity })}
@@ -191,7 +191,7 @@ export default function OrdersPage() {
             {!isLoading && !isError && (orders.length === 0 ? (
                 <EmptyState />
             ) : (
-                <div className="flex flex-wrap gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3    gap-3 sm:gap-4">
                     {orders.map((order) => (
                         <OrderRow key={order._id} order={{
                             _id: order._id,
