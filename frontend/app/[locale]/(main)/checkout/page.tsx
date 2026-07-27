@@ -87,7 +87,7 @@ export default function CheckoutPage() {
             {
                 onSuccess: (order) => {
                     toast.success("در حال انتقال به درگاه شاپرک...");
-                    console.log(order)
+
                     setIsSubmitting(false);
 
                     form.reset()

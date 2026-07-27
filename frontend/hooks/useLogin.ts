@@ -28,7 +28,6 @@ export function useLogin() {
         mutationFn: loginUser,
 
         onSuccess: (data: Res) => {
-            console.log({ data })
             // sync user in cache
             queryClient.setQueryData(["me"], data.data);
         },

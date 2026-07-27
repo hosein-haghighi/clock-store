@@ -159,7 +159,6 @@ function EmptyState() {
 export default function OrdersPage() {
     const t = useTranslations("Orders");
     const { data, isLoading, isError } = useMyOrders();
-    console.log({ data })
     const orders = data ?? [];
 
     return (

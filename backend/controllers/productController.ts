@@ -20,6 +20,7 @@ const isValidObjectId = (id: string) => mongoose.Types.ObjectId.isValid(id);
  */
 export const getProducts: RequestHandler = async (req, res) => {
     try {
+
         const {
             brand,
             category,
