@@ -21,7 +21,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "https://amir-watch.vercel.app/fa",
+    origin: ["https://amir-watch.vercel.app"],
     credentials: true
 }));
 app.set("query parser", "extended");
