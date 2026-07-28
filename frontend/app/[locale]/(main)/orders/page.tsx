@@ -9,8 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { useMyOrders, useCancelOrder } from "@/hooks/useOrder";
 import { formatOrderDate } from "@/lib/formatOrderDate";
 import Link from "next/link";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
+import { API } from "@/hooks/types";
 
 type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
 
@@ -50,7 +49,7 @@ function parseColorName(raw?: string): string | null {
 
 function resolveImage(path: string) {
     if (!path) return "/placeholder-watch.jpg";
-    return path.startsWith("http") ? path : `${API_BASE}${path}`;
+    return path.startsWith("http") ? path : `${API}${path}`;
 }
 
 function OrderRow({ order }: { order: Order }) {

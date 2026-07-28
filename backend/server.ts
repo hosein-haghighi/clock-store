@@ -21,10 +21,10 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    // origin: ["https://amir-watch.vercel.app"],
-    origin: true,
+    origin: process.env.CLIENT_URL,
     credentials: true
 }));
+console.log({ origin: process.env.CLIENT_URL, })
 app.set("query parser", "extended");
 
 app.use("/api/v1/users", userRouter);
@@ -40,12 +40,12 @@ if (!MONGODB_URI) {
 }
 
 mongoose
-    .connect("mongodb://127.0.0.1:27017/clock-store")
+    .connect(MONGODB_URI)
     .then(() => console.log("db connected successfully!"))
     .catch((err) => console.error("db connection error:", err));
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log("server is running on the port:", PORT);
 });

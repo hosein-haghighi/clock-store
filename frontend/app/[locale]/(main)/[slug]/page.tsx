@@ -27,6 +27,7 @@ import { useTranslations, useLocale } from "next-intl";
 import Loading from "../loading";
 import { ProductType } from "@/types/product";
 import { useCart } from "@/hooks/useCart";
+import { API } from "@/hooks/types";
 
 export default function ProductPage() {
     const t = useTranslations("product");
@@ -66,7 +67,7 @@ export default function ProductPage() {
     }
 
     // ── Derived values ────────────────────────────────────────────────────────
-    const API = process.env.NEXT_PUBLIC_API_URL ?? "";
+
 
     const price = selectedVariant?.price ?? 0;
     const discountPrice = selectedVariant?.discountPrice;

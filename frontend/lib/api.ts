@@ -1,8 +1,9 @@
 // lib/api.ts
+import { API } from '@/hooks/types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 const api = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1`,
+    baseURL: `${API}/api/v1`,
     withCredentials: true,
 });
 let isRefreshing = false;

@@ -1,7 +1,7 @@
 import { apiAddItem, apiRemoveItem, apiUpdateItem, fetchCartDetails, fetchServerCart, pushCartMerge } from "@/services/cartServices";
 import { CartItemType, useCartStore } from "@/store/useCartStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useEffectEvent, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useUser } from "./useUser";
 
 
@@ -14,6 +14,7 @@ export interface DetailedCartItemType extends CartItemType {
     discountPrice: number;
     stock: number;
 }
+
 export const useCart = () => {
     const {
         cartItems: offlineCartItems,
@@ -39,7 +40,7 @@ export const useCart = () => {
         queryKey: ["cart"],
         queryFn: fetchServerCart,
         enabled: isAuthenticated,
-        staleTime: 1000 * 30,  // 30s or more 
+        staleTime: 1000 * 30,  // 30s or more
         refetchOnMount: false
     });
 
@@ -53,6 +54,7 @@ export const useCart = () => {
         .map(i => `${i.productId}-${i.variantId}`)
         .sort()
         .join("|");
+
     const detailsQuery = useQuery({
         queryKey: ["cart-details", cartKey],
         queryFn: () => fetchCartDetails(
@@ -67,6 +69,8 @@ export const useCart = () => {
 
     // ───────────────────────────────────────
     // merge mutation (used on login)
+    // onSuccess is the ONLY place that clears the offline cart —
+    // never clear it optimistically, or a failed merge loses the cart.
     // ───────────────────────────────────────
 
     const mergeMutation = useMutation({
@@ -76,20 +80,16 @@ export const useCart = () => {
             clearOfflineItems();
         },
     });
-    useEffect(() => {
-        mergeMutation.mutate(offlineCartItems);
 
-        return () => {
-
-        }
-    }, [])
-
-    // mergeMutation.mutate(offlineCartItems);
     // ───────────────────────────────────────
-    // login transition: merge local → server, then clear local
-    // logout transition: copy server cart → Zustand
+    // login transition: merge local → server, then clear local (in onSuccess)
+    // logout transition: clear local, drop server cart query
+    //
+    // NOTE: this is the single source of truth for triggering a merge.
+    // There used to be a second, unconditional "merge on every mount"
+    // effect here — it fired regardless of auth state (even for guests)
+    // and raced with this one. It's removed; this effect alone handles it.
     // ───────────────────────────────────────
-
 
     useEffect(() => {
         const prev = prevAuthRef.current;
@@ -98,18 +98,21 @@ export const useCart = () => {
         if (prev === false && isAuthenticated) {
             if (offlineCartItems.length > 0) {
                 mergeMutation.mutate(offlineCartItems);
-                clearOfflineItems()
+                // clearOfflineItems() intentionally NOT called here —
+                // it happens in mergeMutation's onSuccess so we don't
+                // wipe the guest cart if the merge request fails.
             }
         }
 
         // logout: prev was true, now false
         if (prev === true && !isAuthenticated) {
-            clearOfflineItems()
+            clearOfflineItems();
             queryClient.removeQueries({ queryKey: ["cart"] });
         }
 
         prevAuthRef.current = isAuthenticated;
-    }, [isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthenticated]);
 
 
     // ───────────────────────────────────────
@@ -127,8 +130,8 @@ export const useCart = () => {
             return;
         }
 
-        // guest: fetch details on-demand برای این آیتم خاص
-        let stock = 999; // fallback امن
+        // guest: fetch details on-demand for this specific item
+        let stock = 999; // safe fallback
         try {
             const details = await fetchCartDetails([item]);
             const detailedItem = details.find(
@@ -137,7 +140,7 @@ export const useCart = () => {
             );
             stock = detailedItem?.stock ?? 999;
         } catch {
-            // اگه fetch fail شد، با stock=999 ادامه بده
+            // if fetch fails, continue with stock=999
         }
 
         addItemOffline({ ...item, stock });

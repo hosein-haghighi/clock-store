@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Star, Package } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { ProductType } from "@/types/product";
+import { API } from "@/hooks/types";
 
 
 
@@ -41,7 +42,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const discountPercent = hasDiscount ? mostDiscountPercentAndIndex[0].toFixed(0) : null
   //_________________________________________________________________________//
 
-  const src = `${process.env.NEXT_PUBLIC_API_URL}${product.images[0]}`;
+  const src = `${API}${product.images[0]}`;
   return (
     <Link href={`/${product.slug}`} className="p-0 pt-2" >
       <Card className="group flex flex-col  justify-center overflow-hidden 

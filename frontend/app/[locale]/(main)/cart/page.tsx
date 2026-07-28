@@ -23,6 +23,7 @@ import { useTranslations } from "next-intl";
 import { useProducts } from "@/hooks/useProducts";
 import Loading from "../loading";
 import api from "@/lib/api";
+import { API } from "@/hooks/types";
 
 const PROMO_CODES: Record<string, number> = {
     WATCH10: 10,
@@ -36,7 +37,6 @@ export default function CartPage() {
     // const product =  products.find( (item)=> item.id )
     const { isAuthenticated } = useUser();
     const router = useRouter();
-    const API = process.env.NEXT_PUBLIC_API_URL ?? "";
 
     const effectivePrice = (item: { price: number; discountPrice?: number }) => {
         return !!item?.discountPrice && item.discountPrice < item.price && item.discountPrice > 0
@@ -139,7 +139,7 @@ export default function CartPage() {
                             const ep = effectivePrice(item);
                             const imgSrc = !!item.image ? `${API}${item.image}` : null;
 
-                            const hasDiscount = !!item?.discountPrice && selectedVariant?.discountPrice! > 0;
+                            const hasDiscount = !!item?.discountPrice && selectedVariant?.discountPrice > 0;
 
 
                             return (

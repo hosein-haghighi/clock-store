@@ -1,8 +1,6 @@
 import api from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const API = process.env.NEXT_PUBLIC_API_URL;
-
 type LogoutResponse = {
     message: string;
 };
