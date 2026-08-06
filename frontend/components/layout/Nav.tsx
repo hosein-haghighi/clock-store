@@ -75,10 +75,11 @@ export const Nav = () => {
 
                 {
                     navItems.map((navItem) => {
-                        const isActive = `/${pathName.split("/").at(-1)}` === navItem.href
                         if (!navItem) {
                             return
                         }
+                        const isActive = `/${pathName.split("/").at(-1)}` === navItem.href
+
 
                         return (
                             <li key={navItem.name} className='relative'>
