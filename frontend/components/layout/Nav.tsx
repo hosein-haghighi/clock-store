@@ -4,7 +4,7 @@ import React from 'react'
 import { Button } from '../ui/button';
 import { Link } from '@/i18n/navigation';
 import Logout from '../auth/logout';
-import { LogIn, LogInIcon, ShoppingCartIcon, WatchIcon } from 'lucide-react';
+import { Handbag, HomeIcon, icons, LogIn, LogInIcon, PhoneCallIcon, ShoppingCartIcon, WatchIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useCart } from '@/hooks/useCart';
@@ -23,34 +23,49 @@ export const Nav = () => {
     const { user, loading, isAuthenticated } = useUser();
     const pathName = usePathname()
 
-    const navItems = isAuthenticated ? [
+    const navItems = [
+        {
+            name: t("home"),
+            href: "/",
+            icon: <HomeIcon size={18} />
+
+
+        },
         {
             name: t("contact"),
             href: "/contact",
+            icon: <PhoneCallIcon size={18} />
         },
-
-        {
-            name: t("orders"),
-            href: "/orders",
-        }
+        ...(isAuthenticated
+            ? [
+                {
+                    name: t("orders"),
+                    href: "/orders",
+                    icon: <Handbag size={18} />
+                },
+            ]
+            : []),
         ,
         {
             name: t("cart"),
             href: "/cart",
+            icon: <ShoppingCartIcon size={18} />
         }
-    ] :
-        [
-            {
-                name: t("contact"),
-                href: "/contact",
-            },
+    ]
+    console.log({ navItems })
+    // :
+    //     [
+    //         {
+    //             name: t("contact"),
+    //             href: "/contact",
+    //         },
 
 
-            {
-                name: t("cart"),
-                href: "/cart",
-            }
-        ]
+    //         {
+    //             href: "/cart",
+    //             icon: <ShoppingCartIcon size={18} />
+    //         }
+    //     ]
 
 
     return (
@@ -58,37 +73,32 @@ export const Nav = () => {
         <nav className="sticky top-0 z-50 bg-background p-2 flex justify-between items-center">
             <ul className='flex gap-0  lg:gap-2 items-center '>
 
-                <li className={`${pathName === "/" ? "text-foreground" : "text-muted-foreground"} `}>
-                    <Link href={"/"} >
-                        <WatchIcon />
-                    </Link>
-                </li>
-
                 {
                     navItems.map((navItem) => {
                         const isActive = `/${pathName.split("/").at(-1)}` === navItem.href
-                        const isCart = navItem.href === "/cart"
 
-                        if (isCart) {
-                            return (
-                                <li key={navItem.name} className='relative'>
-                                    <Link href={navItem.href}>
-                                        <Button variant={'link'} className={`${isActive ? "text-foreground bg-muted " : "text-muted-foreground"} rounded-lg p-2 text-inherit `} >
-                                            <span className='flex items-center'>
 
-                                                <span className='pb-1'>
-                                                    <ShoppingCartIcon size={18} /></span>
-                                                <span>{navItem.name}</span>
-                                                {totalItems > 0 && (
-                                                    <span className="absolute top-1 right-0 text-xs bg-amber-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
-                                                        {totalItems}
-                                                    </span>
-                                                )}</span>
-                                        </Button>
-                                    </Link>
-                                </li>
-                            )
-                        }
+                        return (
+                            <li key={navItem.name} className='relative'>
+                                <Link href={navItem.href}>
+                                    <Button variant={'link'} className={`${isActive ? "text-foreground bg-muted flex flex-col" : "text-muted-foreground"} rounded-lg p-2 py-6 text-inherit `} >
+                                        <span className='flex items-center flex-col'>
+                                            {navItem.icon}
+                                            <span className='pb-1'>
+                                            </span>
+                                            <span>{navItem.name}</span>
+                                            {totalItems > 0 && navItem.href === "/cart" && (
+                                                <span className="absolute top-1 right-0 text-xs bg-amber-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                                    {totalItems}
+                                                </span>
+                                            )}
+                                        </span>
+
+                                    </Button>
+                                </Link>
+                            </li>
+                        )
+
 
                         return (
                             <li key={navItem.name}>
@@ -110,11 +120,12 @@ export const Nav = () => {
 
                     <div  >
                         <Link href="/login"  >
-                            <Button asChild variant={"default"} className='flex gap-2 items-center'>
+                            <Button asChild variant={"default"} className='flex flex-col   gap-0  py-6 items-center'>
 
                                 <span className='flex'>
-                                    <span> {tAuth("login")}</span>
                                     <LogInIcon />
+                                    <span> {tAuth("login")}</span>
+
                                 </span>
 
 
@@ -124,7 +135,7 @@ export const Nav = () => {
 
                     :
 
-                    <Logout />
+                    <Logout className={"py-6"} />
             }
         </nav >
     )

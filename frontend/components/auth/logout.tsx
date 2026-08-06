@@ -5,7 +5,10 @@ import { useLogout } from '@/hooks/useLogout';
 import { LogOutIcon } from 'lucide-react';
 import { useTranslations } from "next-intl";
 import { redirect } from 'next/navigation';
-export function Logout() {
+type Props = {
+    className?: string
+}
+export function Logout({ className }: Props) {
 
     const t = useTranslations("auth")
     const { mutate: logout } = useLogout()
@@ -21,10 +24,11 @@ export function Logout() {
             }
         });
     }
+
     return (
-        <Button onClick={onLogoutHandle} className='bg-muted text-foreground'>
-            <span>{t("logout")}</span>
+        <Button onClick={onLogoutHandle} className={`bg-muted text-foreground flex flex-col gap-0 ${className}`}>
             <LogOutIcon />
+            <span >{t("logout")}</span>
         </Button>
     )
 }

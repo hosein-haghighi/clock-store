@@ -16,6 +16,7 @@ const fa = {
         alreadyHaveAccount: "قبلاً ثبت نام کرده‌اید؟"
     },
     nav: {
+        home: "خانه",
         orders: "سفارش ها",
         contact: "تماس",
         repair: "تعمیرات",

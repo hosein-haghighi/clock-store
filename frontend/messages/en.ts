@@ -18,6 +18,7 @@ const en: MessagesType = {
         alreadyHaveAccount: "Already have an account?"
     },
     nav: {
+        home: "Home",
         orders: "Orders",
         contact: "Contact",
         repair: "Repair",

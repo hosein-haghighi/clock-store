@@ -24,7 +24,6 @@ app.use(cors({
     origin: process.env.CLIENT_URL,
     credentials: true
 }));
-console.log({ origin: process.env.CLIENT_URL, })
 app.set("query parser", "extended");
 
 app.use("/api/v1/users", userRouter);

@@ -80,11 +80,11 @@ export default function CartPage() {
     if (!!isLoading) {
         return <Loading />
     }
-
+    console.log({ cartItems })
     // ── Empty state ──────────────────────────────────────────────────────────
-    if (cartItems?.length === 0) {
+    if (cartItems?.length === 0 || !cartItems) {
         return (
-            <div className="min-h-screen   flex flex-col items-center justify-center gap-6 px-4">
+            <div className="min-h-screen flex flex-col items-center justify-center gap-6 px-4">
                 <div className="h-20 w-20 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center">
                     <ShoppingCart className="h-9 w-9 text-zinc-300 dark:text-zinc-600" />
                 </div>
