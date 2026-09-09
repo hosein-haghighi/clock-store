@@ -1,3 +1,4 @@
+"use client"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "./types";
 import { ProductType } from "@/types/product";
@@ -90,6 +91,7 @@ export const useFeaturedProducts = (filters: {}) => {
         staleTime: 1000 * 60 * 10,
         retry: false,
     });
+    console.log("here")
     return {
         isEmpty: !query?.data?.data,
         products: query.data?.data ?? [],

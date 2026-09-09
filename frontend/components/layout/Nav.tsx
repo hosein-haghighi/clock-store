@@ -52,7 +52,6 @@ export const Nav = () => {
             icon: <ShoppingCartIcon size={18} />
         }
     ]
-    console.log({ navItems })
     // :
     //     [
     //         {

@@ -37,7 +37,6 @@ const MONGODB_URI = process.env.MONGODB_URI;
 if (!MONGODB_URI) {
     throw new Error("MONGODB_URI is not defined in environment variables");
 }
-
 mongoose
     .connect(MONGODB_URI)
     .then(() => console.log("db connected successfully!"))

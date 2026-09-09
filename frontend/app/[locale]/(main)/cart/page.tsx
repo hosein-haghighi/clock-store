@@ -80,7 +80,6 @@ export default function CartPage() {
     if (!!isLoading) {
         return <Loading />
     }
-    console.log({ cartItems })
     // ── Empty state ──────────────────────────────────────────────────────────
     if (cartItems?.length === 0 || !cartItems) {
         return (
