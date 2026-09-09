@@ -9,7 +9,7 @@ type SignupInput = {
 };
 
 const signupUser = async (data: SignupInput): Promise<any> => {
-    const { data: resData } = await api.post(`${API}/api/v1/auth/signup`, data)
+    const { data: resData } = await api.post(`/signup`, data)
     return resData
 };
 

@@ -16,7 +16,9 @@ type Res = {
 
 const loginUser = async (data: LoginInput): Promise<Res> => {
 
-    const { data: resData } = await api.post(`${API}/api/v1/auth/login`, data)
+    const { data: resData } = await api.post(`${API}/api/v1/auth/login`, data, {
+        withCredentials: true,
+    })
 
     return resData;
 };

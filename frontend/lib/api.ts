@@ -1,7 +1,6 @@
 // lib/api.ts
 import { API } from '@/hooks/types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-
 const api = axios.create({
     baseURL: `${API}/api/v1`,
     withCredentials: true,
