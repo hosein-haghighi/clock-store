@@ -81,7 +81,7 @@ export const useProducts = (filters: ProductFilters = {}) => {
 
 /**
  * GET /api/products/featured
- * محصولات ویژه صفحه اصلی
+ * محصولات ویژ  ه صفحه اصلی
  */
 
 export const useFeaturedProducts = (filters: {}) => {
@@ -91,7 +91,6 @@ export const useFeaturedProducts = (filters: {}) => {
         staleTime: 1000 * 60 * 10,
         retry: false,
     });
-    console.log("here")
     return {
         isEmpty: !query?.data?.data,
         products: query.data?.data ?? [],
