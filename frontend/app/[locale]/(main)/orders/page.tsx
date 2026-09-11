@@ -9,7 +9,6 @@ import { Separator } from "@/components/ui/separator";
 import { useMyOrders, useCancelOrder } from "@/hooks/useOrder";
 import { formatOrderDate } from "@/lib/formatOrderDate";
 import Link from "next/link";
-import { API } from "@/hooks/types";
 
 type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
 
@@ -49,7 +48,7 @@ function parseColorName(raw?: string): string | null {
 
 function resolveImage(path: string) {
     if (!path) return "/placeholder-watch.jpg";
-    return path.startsWith("http") ? path : `${API}${path}`;
+    return path.startsWith("http") ? path : `/uploads${path}`;
 }
 
 function OrderRow({ order }: { order: Order }) {

@@ -19,7 +19,6 @@ import { useRouter } from "@/i18n/navigation";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 import Loading from "../loading";
-import { API } from "@/hooks/types";
 
 const PROMO_CODES: Record<string, number> = {
     WATCH10: 10,
@@ -132,7 +131,7 @@ export default function CartPage() {
                             const selectedVariant = item
 
                             const ep = effectivePrice(item);
-                            const imgSrc = !!item.image ? `${API}${item.image}` : null;
+                            const imgSrc = !!item.image ? `/uploads${item.image}` : null;
 
                             const hasDiscount = !!item?.discountPrice && selectedVariant?.discountPrice > 0;
 
