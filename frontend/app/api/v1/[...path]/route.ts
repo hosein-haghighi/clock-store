@@ -22,10 +22,16 @@ async function proxy(
         duplex: "half",
         redirect: "manual",
     });
-    console.log({ res })
+
+    const responseHeaders = new Headers(res.headers);
+    responseHeaders.delete("content-encoding");
+    responseHeaders.delete("content-length");
+    responseHeaders.delete("connection");
+    responseHeaders.delete("transfer-encoding");
+
     return new NextResponse(res.body, {
         status: res.status,
-        headers: res.headers,
+        headers: responseHeaders,
     });
 }
 
