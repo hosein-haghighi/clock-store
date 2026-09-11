@@ -4,9 +4,10 @@ const BACKEND_URL = process.env.BACKEND_URL; // مثلا: https://your-app.onren
 
 async function proxy(
     req: NextRequest,
-    { params }: { params: { path: string[] } }
+    { params }: { params: Promise<{ path: string[] }> }
 ) {
-    const path = params.path.join("/");
+    const { path: pathSegments } = await params;
+    const path = pathSegments.join("/");
     const url = `${BACKEND_URL}/api/v1/${path}${req.nextUrl.search}`;
 
     const headers = new Headers(req.headers);
