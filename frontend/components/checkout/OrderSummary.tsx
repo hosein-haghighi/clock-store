@@ -40,7 +40,7 @@ const OrderSummary = ({ cartItems, isSubmitting, formatPrice, deliveryCost, tota
                             <div key={item.slug} className="flex items-center justify-center  gap-3 ">
                                 <div className="w-20 h-20 rounded-lg overflow-hidden border border-border ">
                                     <img
-                                        src={!!item.image ? `/uploads${item.image}` : undefined}
+                                        src={!!item.image ? `${item.image}` : undefined}
                                         alt={item.slug}
                                         className="w-full h-full object-contain"
                                     />

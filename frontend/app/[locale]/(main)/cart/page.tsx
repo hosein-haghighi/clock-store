@@ -131,7 +131,7 @@ export default function CartPage() {
                             const selectedVariant = item
 
                             const ep = effectivePrice(item);
-                            const imgSrc = !!item.image ? `/uploads${item.image}` : null;
+                            const imgSrc = !!item.image ? `${item.image}` : null;
 
                             const hasDiscount = !!item?.discountPrice && selectedVariant?.discountPrice > 0;
 

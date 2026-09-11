@@ -155,7 +155,7 @@ export default function ProductPage() {
                                         )}
                                     >
                                         <img
-                                            src={`/uploads${img}`}
+                                            src={`${img}`}
                                             alt={`${product.title} ${i + 1}`}
                                             className="h-full w-full object-cover"
                                         />
@@ -167,7 +167,7 @@ export default function ProductPage() {
                         <div className="relative flex-1 h-72 aspect-square dark:bg-zinc-900 rounded-2xl overflow-hidden group">
                             {product.images.length > 0 ? (
                                 <img
-                                    src={`/uploads${product.images[selectedImage]}`}
+                                    src={`${product.images[selectedImage]}`}
                                     alt={product.title}
                                     className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
                                 />

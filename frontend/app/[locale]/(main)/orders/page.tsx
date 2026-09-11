@@ -48,7 +48,7 @@ function parseColorName(raw?: string): string | null {
 
 function resolveImage(path: string) {
     if (!path) return "/placeholder-watch.jpg";
-    return path.startsWith("http") ? path : `/uploads${path}`;
+    return path.startsWith("http") ? path : `${path}`;
 }
 
 function OrderRow({ order }: { order: Order }) {
