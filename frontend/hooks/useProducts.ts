@@ -83,11 +83,10 @@ export const useProducts = (filters: ProductFilters = {}) => {
  * GET /api/products/featured
  * محصولات ویژ  ه صفحه اصلی
  */
-
-export const useFeaturedProducts = (filters: {}) => {
+export const useFeaturedProducts = (filters: Record<string, string>) => {
     const query = useQuery({
         queryKey: ["products", "featured", filters],
-        queryFn: () => getProductByUrl(params),
+        queryFn: () => getProductByUrl(new URLSearchParams(filters)),
         staleTime: 1000 * 60 * 10,
         retry: false,
     });
@@ -97,7 +96,7 @@ export const useFeaturedProducts = (filters: {}) => {
         loading: query.isLoading,
         isFetching: query.isFetching,
         error: query.error,
-        refetch: query.refetch
+        refetch: query.refetch,
     };
 };
 
