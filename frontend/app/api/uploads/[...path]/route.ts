@@ -8,7 +8,7 @@ export async function GET(
 ) {
     const { path: pathSegments } = await params;
     const path = pathSegments.join("/");
-    const url = `${BACKEND_URL}/uploads/${path}`;
+    const url = `${BACKEND_URL}/${path}`;
 
     const res = await fetch(url, {
         redirect: "manual",
