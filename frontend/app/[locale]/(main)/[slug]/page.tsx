@@ -25,7 +25,7 @@ import { useProductBySlug } from "@/hooks/useProducts";
 import toast from "react-hot-toast";
 import { useTranslations, useLocale } from "next-intl";
 import Loading from "../loading";
-import { ProductType } from "@/types/product";
+
 import { useCart } from "@/hooks/useCart";
 import { API } from "@/hooks/types";
 

@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { API, User } from "./types";
+import { User } from "./types";
 import api from "@/lib/api";
 import { useEffect } from "react";
 

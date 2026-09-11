@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { User, API } from "./types";
 import api from "@/lib/api";
 
 
@@ -12,14 +11,8 @@ type Res = {
     message: string,
     status: string
 }
-
-
 const loginUser = async (data: LoginInput): Promise<Res> => {
-
-    const { data: resData } = await api.post(`${API}/api/v1/auth/login`, data, {
-        withCredentials: true,
-    })
-
+    const { data: resData } = await api.post("/auth/login", data);
     return resData;
 };
 

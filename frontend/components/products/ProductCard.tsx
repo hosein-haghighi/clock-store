@@ -3,13 +3,11 @@
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ShoppingCart, Star, Package } from "lucide-react";
+import { Star, Package } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { ProductType } from "@/types/product";
 import { API } from "@/hooks/types";
@@ -46,8 +44,8 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/${product.slug}`} className="p-0 pt-2" >
       <Card className="group flex flex-col  justify-center overflow-hidden 
-      p-0
-      rounded-none border w-full h-96 gap-0 border-zinc-200 bg-white  transition-all duration-300 hover:shadow-xl hover:inset-shadow-xl cursor-pointer dark:border-zinc-800 dark:bg-zinc-900 pt-0 py-0 m-0">
+        p-0
+        rounded-none border w-full h-96 gap-0 border-zinc-200 bg-white  transition-all duration-300 hover:shadow-xl hover:inset-shadow-xl cursor-pointer dark:border-zinc-800 dark:bg-zinc-900 pt-0 py-0 m-0">
         {/* Image / Placeholder */}
 
         <div className="relative h-60  w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">

@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { API, User } from "./types";
 import api from "@/lib/api";
 
 type SignupInput = {
