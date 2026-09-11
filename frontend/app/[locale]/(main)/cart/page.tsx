@@ -10,9 +10,7 @@ import {
     Trash2,
     ChevronLeft,
     Package,
-    Tag,
     ArrowRight,
-    X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/hooks/useCart";
@@ -20,9 +18,7 @@ import { useUser } from "@/hooks/useUser";
 import { useRouter } from "@/i18n/navigation";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
-import { useProducts } from "@/hooks/useProducts";
 import Loading from "../loading";
-import api from "@/lib/api";
 import { API } from "@/hooks/types";
 
 const PROMO_CODES: Record<string, number> = {

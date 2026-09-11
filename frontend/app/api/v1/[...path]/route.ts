@@ -22,7 +22,7 @@ async function proxy(
         duplex: "half",
         redirect: "manual",
     });
-
+    console.log({ res })
     return new NextResponse(res.body, {
         status: res.status,
         headers: res.headers,
