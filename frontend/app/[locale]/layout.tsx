@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import "./globals.css";
 import Providers from "@/app/[locale]/Providers";
 import { Nav } from "@/components/layout/Nav";
-import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from "@/i18n/routing";
 import { } from "../../messages/en"

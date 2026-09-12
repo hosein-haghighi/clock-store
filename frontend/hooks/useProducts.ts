@@ -82,23 +82,38 @@ export const useProducts = (filters: ProductFilters = {}) => {
  * GET /api/products/featured
  * محصولات ویژ  ه صفحه اصلی
  */
-export const useFeaturedProducts = (filters: Record<string, string>) => {
+export const useFeaturedProducts = (
+    filters: Record<string, string>,
+    initialProducts?: ProductType[]
+) => {
     const query = useQuery({
         queryKey: ["products", "featured", filters],
-        queryFn: () => getProductByUrl(new URLSearchParams(filters)),
+
+        queryFn: () =>
+            getProductByUrl(
+                new URLSearchParams(filters)
+            ),
+
+        initialData: initialProducts
+            ? {
+                data: initialProducts,
+            }
+            : undefined,
+
         staleTime: 1000 * 60 * 10,
+
         retry: false,
     });
+
     return {
-        isEmpty: !query?.data?.data,
         products: query.data?.data ?? [],
+        isEmpty: !query.data?.data?.length,
         loading: query.isLoading,
         isFetching: query.isFetching,
         error: query.error,
         refetch: query.refetch,
     };
 };
-
 /**
  * GET /api/products/:slug
  * جزئیات یک محصول

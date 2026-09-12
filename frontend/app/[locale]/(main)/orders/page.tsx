@@ -83,7 +83,7 @@ function OrderRow({ order }: { order: Order }) {
                     return (
                         <div key={item._id} className="flex items-center gap-3 sm:gap-4">
                             <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md bg-muted sm:h-14 sm:w-14">
-                                <img
+                                <Image
                                     src={resolveImage(item.image)}
                                     alt={item.title}
                                     className="h-full w-full object-contain"

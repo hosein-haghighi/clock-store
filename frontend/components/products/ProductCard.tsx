@@ -10,13 +10,15 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Package } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { ProductType } from "@/types/product";
+import Image from "next/image";
 
 
 
 interface ProductCardProps {
   product: ProductType;
+  index: number
 }
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ index, product }: ProductCardProps) {
 
   // cheapest Color on the board //
   const mostDiscountPercentAndIndex = product.variants.reduce(
@@ -49,10 +51,14 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <div className="relative h-60  w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
           {product.images.length > 0 ? (
-            <img
+            <Image
               src={src}
               alt={product.title}
               height={64}
+              priority={index === 0}
+              loading={index !== 0 ? "lazy" : "eager"}
+              fetchPriority="high"
+              width={100}
               className="h-full  w-full object-contain transition-transform duration-500 "
             />
           ) : (

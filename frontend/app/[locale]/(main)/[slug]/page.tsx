@@ -27,6 +27,7 @@ import { useTranslations, useLocale } from "next-intl";
 import Loading from "../loading";
 
 import { useCart } from "@/hooks/useCart";
+import Image from "next/image";
 
 export default function ProductPage() {
     const t = useTranslations("product");
@@ -154,7 +155,7 @@ export default function ProductPage() {
                                                 : "border-zinc-200 dark:border-zinc-700 opacity-60 hover:opacity-100"
                                         )}
                                     >
-                                        <img
+                                        <Image
                                             src={`/api${img}`}
                                             alt={`${product.title} ${i + 1}`}
                                             className="h-full w-full object-cover"
@@ -166,7 +167,7 @@ export default function ProductPage() {
 
                         <div className="relative flex-1 h-72 aspect-square dark:bg-zinc-900 rounded-2xl overflow-hidden group">
                             {product.images.length > 0 ? (
-                                <img
+                                <Image
                                     src={`/api${product.images[selectedImage]}`}
                                     alt={product.title}
                                     className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"

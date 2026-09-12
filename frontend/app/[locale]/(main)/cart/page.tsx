@@ -19,6 +19,7 @@ import { useRouter } from "@/i18n/navigation";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 import Loading from "../loading";
+import Image from "next/image";
 
 const PROMO_CODES: Record<string, number> = {
     WATCH10: 10,
@@ -145,7 +146,7 @@ export default function CartPage() {
                                     <Link href={`/${item.slug}`} className="shrink-0">
                                         <div className="h-24 w-24 rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800">
                                             {imgSrc ? (
-                                                <img
+                                                <Image
                                                     src={imgSrc}
                                                     alt={item.title}
                                                     className="h-full w-full object-contain"

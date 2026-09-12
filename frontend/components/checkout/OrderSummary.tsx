@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
 import { DetailedCartItemType } from "@/hooks/useCart";
+import Image from "next/image";
 
 type PropsType = {
     cartItems: DetailedCartItemType[],
@@ -39,8 +40,8 @@ const OrderSummary = ({ cartItems, isSubmitting, formatPrice, deliveryCost, tota
                         {cartItems.map(item => (
                             <div key={item.slug} className="flex items-center justify-center  gap-3 ">
                                 <div className="w-20 h-20 rounded-lg overflow-hidden border border-border ">
-                                    <img
-                                        src={!!item.image ? `${item.image}` : undefined}
+                                    <Image
+                                        src={`/api${item.image}`}
                                         alt={item.slug}
                                         className="w-full h-full object-contain"
                                     />
