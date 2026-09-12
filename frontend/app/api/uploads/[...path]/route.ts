@@ -6,6 +6,8 @@ export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ path: string[] }> }
 ) {
+    console.log("here")
+    console.log({ BACKEND_URL })
     const { path: pathSegments } = await params;
     const path = pathSegments.join("/");
     const url = `${BACKEND_URL}/uploads/${path}`;

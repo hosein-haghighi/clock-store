@@ -39,7 +39,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const discountPercent = hasDiscount ? mostDiscountPercentAndIndex[0].toFixed(0) : null
   //_________________________________________________________________________//
 
-  const src = `${product.images[0]}`;
+  const src = `/api${product.images[0]}`;
   return (
     <Link href={`/${product.slug}`} className="p-0 pt-2" >
       <Card className="group flex flex-col  justify-center overflow-hidden 
